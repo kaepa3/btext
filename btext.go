@@ -12,6 +12,7 @@ func BParseFile(path string) []byte {
 	// ファイルを開く
 	f, err := os.Open(path)
 	if err != nil {
+		fmt.Fprintf(os.Stderr, "err:%s nofile %s \n", err, path)
 		return make([]byte, 0)
 	}
 
@@ -36,7 +37,7 @@ func BParseLine(text string) []byte {
 	}
 	var readBuffer []byte
 	for _, v := range textData {
-		n, err := strconv.ParseInt(v, 16, 8)
+		n, err := strconv.ParseInt(v, 16, 16)
 		if err == nil {
 			readBuffer = append(readBuffer, byte(n))
 		}
@@ -57,6 +58,7 @@ func eraceComment(text string) []string {
 func TParseAry(binary []byte) string {
 	text := addHeader()
 	for i, v := range binary {
+
 		val := fmt.Sprintf("%02x", v)
 		if i != 0 && (i%15) == 0 {
 			text += val + "\n"
@@ -65,6 +67,7 @@ func TParseAry(binary []byte) string {
 		} else {
 			text += val + " "
 		}
+
 	}
 	return text
 }
