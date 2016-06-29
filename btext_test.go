@@ -25,6 +25,7 @@ func TestParseFile(t *testing.T) {
 
 func TestParseLog(t *testing.T) {
 	binary := []byte{1, 2, 3, 4, 5, 6, 7, 8, 9,
+		10, 11, 12, 13, 14, 15, 0x20, 1, 2, 3, 4, 5, 6, 7, 8,
 		10, 11, 12, 13, 14, 15, 0x20, 1, 2, 3, 4, 5, 6, 7, 8}
 	rst := TParseAry(binary)
 	data, err := ioutil.ReadFile("rst.txt")

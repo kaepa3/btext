@@ -9,7 +9,6 @@ import (
 )
 
 func BParseFile(path string) []byte {
-	// ファイルを開く
 	f, err := os.Open(path)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "err:%s nofile %s \n", err, path)
@@ -17,7 +16,6 @@ func BParseFile(path string) []byte {
 	}
 
 	defer f.Close()
-	// Scannerで読み込む
 	lines := make([]byte, 0, 100)
 	scanner := bufio.NewScanner(f)
 	for scanner.Scan() {
@@ -55,19 +53,24 @@ func eraceComment(text string) []string {
 	return strings.Split(text, " ")
 }
 
+const padMax = 8
+
 func TParseAry(binary []byte) string {
 	text := addHeader()
 	for i, v := range binary {
-
 		val := fmt.Sprintf("%02x", v)
-		if i != 0 && (i%15) == 0 {
+		if (i+1)%16 == 0 {
 			text += val + "\n"
 		} else if (i % 16) == 0 {
-			text += fmt.Sprintf("0x%02x\t", i) + val + " "
+			idxString := fmt.Sprintf("0x%02x", i)
+			padSize := padMax - len(idxString)
+			if padSize > 0 {
+				idxString += strings.Repeat(" ", padSize)
+			}
+			text += idxString + val + " "
 		} else {
 			text += val + " "
 		}
-
 	}
 	return text
 }
@@ -77,5 +80,5 @@ func addHeader() string {
 	for i := 0; i < 16; i++ {
 		heads[i] = fmt.Sprintf("%02x", i)
 	}
-	return "\t\t" + strings.Join(heads, " ") + "\n"
+	return strings.Repeat(" ", padMax) + strings.Join(heads, " ") + "\n"
 }
