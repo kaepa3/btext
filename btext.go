@@ -60,10 +60,12 @@ func TParseAry(binary []byte) string {
 	for i, v := range binary {
 
 		val := fmt.Sprintf("%02x", v)
-		if i != 0 && (i%15) == 0 {
+		if ((i + 1) % 16) == 0 {
 			text += val + "\n"
 		} else if (i % 16) == 0 {
-			text += fmt.Sprintf("0x%02x\t", i) + val + " "
+			idxStr := fmt.Sprintf("0x%02x", i)
+			padSize := 8 - len(idxStr)
+			text += idxStr + strings.Repeat(" ", padSize) + val + " "
 		} else {
 			text += val + " "
 		}
@@ -77,5 +79,5 @@ func addHeader() string {
 	for i := 0; i < 16; i++ {
 		heads[i] = fmt.Sprintf("%02x", i)
 	}
-	return "\t\t" + strings.Join(heads, " ") + "\n"
+	return strings.Repeat(" ", 8) + strings.Join(heads, "-") + "\n"
 }
