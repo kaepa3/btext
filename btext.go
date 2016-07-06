@@ -77,5 +77,5 @@ func addHeader() string {
 	for i := 0; i < 16; i++ {
 		heads[i] = fmt.Sprintf("%02x", i)
 	}
-	return strings.Repeat(" ", padMax) + strings.Join(heads, " ") + "\n"
+	return strings.Repeat(" ", padMax) + strings.Join(heads, "-") + "\n"
 }
